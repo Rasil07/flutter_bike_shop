@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "121479722356",
+    "project_id": "fir-flutter-codelab-e3685",
+    "storage_bucket": "fir-flutter-codelab-e3685.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121479722356:android:0ea3303f0dc50704d96821",
+        "android_client_info": {
+          "package_name": "com.example.bike_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8C0y3CW-Mow-1ofWeHYaLfBT2GaIZ17g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121479722356:android:fd1ecc104d43d779d96821",
+        "android_client_info": {
+          "package_name": "com.example.bike_shop_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8C0y3CW-Mow-1ofWeHYaLfBT2GaIZ17g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121479722356:android:be62a363e47a8ca3d96821",
+        "android_client_info": {
+          "package_name": "com.example.gtk_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8C0y3CW-Mow-1ofWeHYaLfBT2GaIZ17g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
