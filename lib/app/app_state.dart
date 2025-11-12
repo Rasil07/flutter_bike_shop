@@ -34,6 +34,11 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    // userChanges() listener will flip _loggedIn=false and notifyListeners()
+  }
+
   Future<DocumentReference> addMessageToGuestBook(String message) {
     if (!_loggedIn) {
       throw Exception('Must be logged in');

@@ -1,14 +1,16 @@
 import 'package:bike_shop_2/app/app_state.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bike_shop_2/landing/landing_page.dart';
-import 'package:bike_shop_2/bikes/presentation/routes.dart';
-import 'package:provider/provider.dart';
+import 'package:bike_shop_2/features/landing/landing_page.dart';
+import 'package:bike_shop_2/features/bikes/presentation/routes.dart';
 
-import 'package:firebase_ui_auth/firebase_ui_auth.dart' show EmailAuthProvider;
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter appRouter(ApplicationState appState) => GoRouter(
   initialLocation: '/',
+  navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(
       path: '/sign-in',
@@ -23,6 +25,7 @@ GoRouter appRouter(ApplicationState appState) => GoRouter(
         ],
       ),
     ),
+
     GoRoute(
       path: "/",
       name: "landing",

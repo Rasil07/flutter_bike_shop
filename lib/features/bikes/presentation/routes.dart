@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../presentation/pages/bike_list_page.dart';
-import '../presentation/pages/bike_create_page.dart';
+import 'pages/bike_list_page.dart';
+import 'pages/bike_create_page.dart';
 
 /// Route names (stable identifiers for deep links/analytics/tests)
 abstract class BikesRouteNames {

@@ -1,16 +1,32 @@
-import 'package:bike_shop_2/bikes/presentation/routes.dart';
-import 'package:bike_shop_2/landing/widgets/bike_visuals.dart';
+import 'package:bike_shop_2/app/app_state.dart';
+import 'package:bike_shop_2/features/bikes/presentation/routes.dart';
+import 'package:bike_shop_2/features/landing/widgets/bike_visuals.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loggedIn = context.select<ApplicationState, bool>((s) => s.loggedIn);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Bike Shop')),
+      appBar: AppBar(
+        title: const Text('Bike Shop'),
+        actions: [
+          if (loggedIn)
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.black),
+              onPressed: () async {
+                await context.read<ApplicationState>().signOut();
+              },
+            ),
+        ],
+      ),
+
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
