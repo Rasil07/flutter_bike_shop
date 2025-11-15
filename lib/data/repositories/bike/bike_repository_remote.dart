@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:bike_shop_2/data/repositories/bike/bike_repository.dart';
 import 'package:bike_shop_2/data/services/bike/bike_service.dart';
-import 'package:bike_shop_2/data/services/firestore/bike_firestore_service.dart';
+
 import 'package:bike_shop_2/domain/bike/bike.dart';
 
 class BikeRepositoryRemote implements BikeRepository {
@@ -14,6 +16,7 @@ class BikeRepositoryRemote implements BikeRepository {
   @override
   Future<List<Bike>> listBikes() async {
     List<Bike> bikes = await _bikeService.listBikes();
+    inspect(bikes);
     return bikes;
   }
 

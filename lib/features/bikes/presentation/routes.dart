@@ -1,5 +1,8 @@
+import 'package:bike_shop_2/data/repositories/bike/bike_repository_remote.dart';
+import 'package:bike_shop_2/features/bikes/view_model/bike_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'pages/bike_list_page.dart';
 import 'pages/bike_create_page.dart';
 
@@ -29,7 +32,12 @@ final List<RouteBase> bikesRoutes = <RouteBase>[
   GoRoute(
     path: bikesListPath,
     name: BikesRouteNames.list,
-    builder: (context, state) => const BikeListPage(),
+    builder: (context, state) {
+      final viewModel = BikeListViewModel(
+        bikeRepository: context.read<BikeRepositoryRemote>(),
+      )..fetchBikes();
+      return BikeListPage(viewModel: viewModel);
+    },
   ),
   GoRoute(
     path: bikeCreatePath,

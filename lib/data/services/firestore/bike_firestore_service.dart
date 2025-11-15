@@ -8,15 +8,20 @@ class BikeFirestoreService {
 
   BikeFirestoreService(this._firestore);
 
-  @override
   Future<List<Bike>> listBikes() async {
     final querySnapshot = await _firestore.collection('bikes').get();
-    print("Bikes fetched: ${querySnapshot.docs.length}");
-    inspect(querySnapshot);
-    return [];
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      return Bike(
+        id: doc.id,
+        brand: data['brand'] ?? '',
+        model: data['model'] ?? '',
+        price: (data['price'] ?? 0).toDouble(),
+        imageUrl: data['imageUrl'] ?? '',
+      );
+    }).toList();
   }
 
-  @override
   Future<Bike?> getBikeById(String id) async {
     final docSnapshot = await _firestore.collection('bikes').doc(id).get();
     if (docSnapshot.exists) {
@@ -27,20 +32,17 @@ class BikeFirestoreService {
     }
   }
 
-  @override
   Future<void> createBike(Bike bike) async {
     final docRef = await _firestore.collection('bikes').add(bike.toMap());
     print("Bike created with ID: ${docRef.id}");
     inspect(docRef);
   }
 
-  @override
   Future<void> updateBike(Bike bike) async {
     await _firestore.collection('bikes').doc(bike.id).update(bike.toMap());
     print("Bike updated with ID: ${bike.id}");
   }
 
-  @override
   Future<void> deleteBike(String id) async {
     await _firestore.collection('bikes').doc(id).delete();
     print("Bike deleted with ID: $id");
