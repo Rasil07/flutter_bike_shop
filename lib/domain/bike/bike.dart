@@ -37,4 +37,14 @@ class Bike {
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
+
+  toMap() {
+    return {
+      'id': id,
+      'model': model,
+      'brand': brand,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
+  }
 }

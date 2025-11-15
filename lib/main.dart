@@ -1,3 +1,4 @@
+import 'package:bike_shop_2/app/providers.dart';
 import 'package:bike_shop_2/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ApplicationState(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(MultiProvider(providers: providers, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
