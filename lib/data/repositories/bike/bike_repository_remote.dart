@@ -1,46 +1,51 @@
 import 'dart:developer';
-
 import 'package:bike_shop_2/data/repositories/bike/bike_repository.dart';
-import 'package:bike_shop_2/data/services/bike/bike_service.dart';
+import 'package:bike_shop_2/data/services/cloud_worker/cloud_worker_service.dart';
+import 'package:bike_shop_2/data/services/firestore/bike_firestore_service.dart';
 
 import 'package:bike_shop_2/domain/bike/bike.dart';
 
 class BikeRepositoryRemote implements BikeRepository {
   // Implementation of the BikeRepository methods
 
-  final BikeService _bikeService;
+  final BikeFirestoreService _bikeFirestoreService;
+  final CloudWorkerService _cloudWorkerService;
 
-  BikeRepositoryRemote({required BikeService bikeService})
-    : _bikeService = bikeService;
+  BikeRepositoryRemote({
+    required BikeFirestoreService bikeFirestoreService,
+    required CloudWorkerService cloudWorkerService,
+  }) : _bikeFirestoreService = bikeFirestoreService,
+       _cloudWorkerService = cloudWorkerService;
 
   @override
   Future<List<Bike>> listBikes() async {
-    List<Bike> bikes = await _bikeService.listBikes();
-    inspect(bikes);
+    List<Bike> bikes = await _bikeFirestoreService.listBikes();
     return bikes;
   }
 
   @override
-  Future<Bike?> getBikeById(String id) {
-    // TODO: implement getBikeById
-    throw UnimplementedError();
+  Future<void> createBike({
+    required String model,
+    required String brand,
+    required double price,
+    List<int>? imageBytes,
+  }) async {
+    String imageUrl = await _cloudWorkerService.uploadFile(imageBytes!);
+
+    await _bikeFirestoreService.createBike(
+      Bike(
+        id: '',
+        model: model,
+        brand: brand,
+        price: price,
+        imageUrl: imageUrl,
+      ),
+    );
   }
 
   @override
-  Future<void> createBike(Bike bike) {
-    // TODO: implement createBike
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateBike(Bike bike) {
-    // TODO: implement updateBike
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteBike(String id) {
-    // TODO: implement deleteBike
-    throw UnimplementedError();
+  Future<void> deleteBike(Bike bike) async {
+    await _cloudWorkerService.deleteFile(bike.imageUrl!);
+    await _bikeFirestoreService.deleteBike(bike.id);
   }
 }

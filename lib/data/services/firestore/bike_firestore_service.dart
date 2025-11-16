@@ -32,19 +32,15 @@ class BikeFirestoreService {
     }
   }
 
-  Future<void> createBike(Bike bike) async {
-    final docRef = await _firestore.collection('bikes').add(bike.toMap());
-    print("Bike created with ID: ${docRef.id}");
-    inspect(docRef);
+  Future<DocumentReference<Map<String, dynamic>>> createBike(Bike bike) async {
+    return await _firestore.collection('bikes').add(bike.toMap());
   }
 
   Future<void> updateBike(Bike bike) async {
     await _firestore.collection('bikes').doc(bike.id).update(bike.toMap());
-    print("Bike updated with ID: ${bike.id}");
   }
 
   Future<void> deleteBike(String id) async {
     await _firestore.collection('bikes').doc(id).delete();
-    print("Bike deleted with ID: $id");
   }
 }

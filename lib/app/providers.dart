@@ -1,11 +1,11 @@
 import 'package:bike_shop_2/app/app_state.dart';
 import 'package:bike_shop_2/data/repositories/bike/bike_repository_remote.dart';
 import 'package:bike_shop_2/data/services/api_client.dart';
+import 'package:bike_shop_2/data/services/cloud_worker/cloud_worker_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bike_shop_2/data/services/firestore/bike_firestore_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:bike_shop_2/data/services/bike/bike_service.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -17,15 +17,15 @@ List<SingleChildWidget> providers = [
   ),
 
   Provider(create: (_) => BikeFirestoreService(FirebaseFirestore.instance)),
-  Provider<BikeService>(
-    create: (context) => BikeService(
-      bikeFirestoreService: context.read<BikeFirestoreService>(),
-      apiClient: context.read<ApiClient>(),
-    ),
+  Provider(
+    create: (context) =>
+        CloudWorkerService(apiClient: context.read<ApiClient>()),
   ),
 
   Provider(
-    create: (context) =>
-        BikeRepositoryRemote(bikeService: context.read<BikeService>()),
+    create: (context) => BikeRepositoryRemote(
+      bikeFirestoreService: context.read<BikeFirestoreService>(),
+      cloudWorkerService: context.read<CloudWorkerService>(),
+    ),
   ), // Placeholder for BikeRepositoryRemote
 ];

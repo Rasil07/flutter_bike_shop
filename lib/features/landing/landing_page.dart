@@ -1,10 +1,10 @@
 import 'package:bike_shop_2/app/app_state.dart';
-import 'package:bike_shop_2/features/bikes/presentation/routes.dart';
 import 'package:bike_shop_2/features/landing/widgets/bike_visuals.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:bike_shop_2/features/bikes/presentation/route_names.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

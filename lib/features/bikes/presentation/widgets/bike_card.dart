@@ -1,63 +1,94 @@
 // lib/features/bikes/presentation/widgets/bike_card.dart
+import 'package:bike_shop_2/app/core/widgets/image_urls.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bike_shop_2/domain/bike/bike.dart';
 
-final String cloudflareWorkerBaseUrl = dotenv.env["SERVER_API"]!;
-
-String buildBikeImageUrl(String imageKey) {
-  final encodedKey = Uri.encodeComponent(imageKey);
-  // adjust this path to match your Worker route
-  return '$cloudflareWorkerBaseUrl/file?key=$encodedKey';
-}
-
 class BikeCard extends StatelessWidget {
   final Bike bike;
-  const BikeCard({super.key, required this.bike});
+
+  final VoidCallback? onTap;
+  const BikeCard({super.key, required this.bike, this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final String? imageUrl = bike.imageUrl != null
         ? buildBikeImageUrl(bike.imageUrl!)
         : null;
 
-    print('imageUrl: $imageUrl');
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (imageUrl != null)
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (_, __) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (_, __, ___) =>
-                    const Center(child: Icon(Icons.broken_image)),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Card(
+        elevation: 2,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // IMAGE
+            SizedBox(
+              height: 120,
+              child: imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) => const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (_, __, ___) =>
+                          const Center(child: Icon(Icons.broken_image)),
+                    )
+                  : const Center(child: Icon(Icons.directions_bike, size: 32)),
+            ),
+
+            // TEXT AREA
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Model + price in one row
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          bike.model,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '\$${bike.price.toStringAsFixed(2)}',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    bike.brand,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
+                ],
               ),
-            )
-          else
-            const SizedBox(
-              height: 160,
-              child: Center(child: Icon(Icons.directions_bike, size: 48)),
             ),
-          ListTile(
-            title: Text(bike.model),
-            subtitle: Text(bike.brand),
-            trailing: Text(
-              '\$${bike.price.toStringAsFixed(2)}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
